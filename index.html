@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Digital Iligan Tourism Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f6faf7;--card:#fff;--tx:#12302a;--mu:#5b736c;--ac:#0b7a6b;--ac2:#e8f4f1;--bd:#d5e4df;--warn:#fff4dc;--warnb:#e5b94a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1a17;--card:#14261f;--tx:#e6f2ee;--mu:#93aca4;--ac:#3ec5b0;--ac2:#173a33;--bd:#24443b;--warn:#3a2f10;--warnb:#a9862b}}
+:root[data-theme="dark"]{--bg:#0d1a17;--card:#14261f;--tx:#e6f2ee;--mu:#93aca4;--ac:#3ec5b0;--ac2:#173a33;--bd:#24443b;--warn:#3a2f10;--warnb:#a9862b}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:linear-gradient(135deg,#0b7a6b,#155e75);color:#fff;padding:32px 18px 28px;text-align:center}
+header h1{margin:0 0 6px;font-size:1.7rem}header p{margin:0 auto;max-width:560px;opacity:.92}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;overflow-x:auto;gap:2px;padding:6px}
+nav a{white-space:nowrap;padding:8px 12px;border-radius:8px;color:var(--tx);text-decoration:none;font-size:.9rem;font-weight:600}
+nav a:hover{background:var(--ac2);color:var(--ac)}
+main{max-width:960px;margin:0 auto;padding:0 16px 40px}
+section{padding-top:28px}h2{margin:0 0 4px;font-size:1.35rem}.sub{color:var(--mu);margin:0 0 14px;font-size:.92rem}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px}
+.card h3{margin:0 0 4px;font-size:1.02rem}.card p{margin:4px 0;font-size:.92rem}
+.tag{display:inline-block;background:var(--ac2);color:var(--ac);border-radius:99px;padding:2px 9px;font-size:.74rem;font-weight:700;margin-right:4px}
+.btn{display:inline-block;margin-top:6px;color:var(--ac);font-weight:700;font-size:.88rem;text-decoration:none}
+.note{background:var(--warn);border-left:4px solid var(--warnb);border-radius:8px;padding:10px 12px;font-size:.88rem;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:top}th{color:var(--mu);font-size:.78rem;text-transform:uppercase}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px}
+.map{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px}
+.pin{cursor:pointer}.pin circle{fill:var(--ac);stroke:#fff;stroke-width:2}.pin text{font-size:11px;fill:var(--tx);font-weight:600}
+.pin.on circle{fill:#e0574a}
+#mapinfo{margin-top:8px;min-height:64px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:99px;padding:6px 13px;font-size:.85rem;cursor:pointer;font-weight:600}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+input[type=search]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:1rem;margin-bottom:10px}
+.day{border-left:3px solid var(--ac);padding:2px 0 2px 12px;margin:8px 0}.day b{color:var(--ac)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}
+footer{text-align:center;color:var(--mu);font-size:.82rem;padding:20px 16px 30px}
+</style></head><body>
+<header><h1>🌊 Digital Iligan Tourism Guide</h1><p>Plan your visit to the City of Majestic Waterfalls: destinations, fees, transport, itineraries, safety and local finds in one place.</p></header>
+<nav><a href="#dest">Destinations</a><a href="#map">Map</a><a href="#fees">Fees</a><a href="#go">Getting There</a><a href="#trip">Itineraries</a><a href="#safe">Safety</a><a href="#food">Food &amp; Products</a><a href="#biz">Directory</a></nav>
+<main>
+<div class="note" style="margin-top:16px"><b>Check before you go:</b> fees, schedules and access rules change. Figures marked "approx." are guides only. Confirm with the Iligan City Tourism Office before travelling.</div>
+
+<section id="dest"><h2>Tourist Destinations</h2><p class="sub">Tap a category to filter.</p>
+<div class="chips" id="dchips"></div><div class="grid" id="dgrid"></div></section>
+
+<section id="map"><h2>Digital Destination Map</h2><p class="sub">Schematic map (not to scale). Tap a pin, then open exact directions in your maps app.</p>
+<div class="map"><svg viewBox="0 0 400 300" width="100%" role="img" aria-label="Schematic map of Iligan destinations">
+<rect width="400" height="300" rx="8" fill="#cfe8f3" opacity=".55"/>
+<path d="M0 70 Q60 60 110 78 T210 84 T310 70 T400 80 L400 300 L0 300Z" fill="#dcebd3"/>
+<path d="M0 70 Q60 60 110 78 T210 84 T310 70 T400 80" fill="none" stroke="#5aa0c4" stroke-width="3"/>
+<text x="150" y="38" fill="#3b7a99" font-size="13" font-style="italic">Iligan Bay</text>
+<path d="M60 88 Q150 120 230 130 T350 200" fill="none" stroke="#9aa" stroke-dasharray="4 4" stroke-width="1.5"/>
+<text x="20" y="290" font-size="10" fill="#6a8">Mountains rise to the south</text>
+<g id="pins"></g></svg>
+<div id="mapinfo" class="card"><p style="color:var(--mu)">Select a pin to see details.</p></div></div></section>
+
+<section id="fees"><h2>Fees &amp; Schedules</h2><p class="sub">Approximate guide. Rates often differ for residents, students, seniors and PWDs.</p>
+<div class="wrap"><table><thead><tr><th>Place</th><th>Typical hours</th><th>Fees</th></tr></thead><tbody>
+<tr><td>Maria Cristina Falls</td><td>Daytime viewing (approx. 7 AM – 5 PM)</td><td>Environmental / viewing fee; approx. modest per person</td></tr>
+<tr><td>Tinago Falls</td><td>Daytime (approx. 8 AM – 5 PM)</td><td>Entrance fee plus optional cottage / raft rentals</td></tr>
+<tr><td>Mimbalot Falls</td><td>Daytime</td><td>Entrance fee; guide recommended</td></tr>
+<tr><td>Limunsudan Falls</td><td>Trek: start early</td><td>Guide / environmental fees, arranged locally</td></tr>
+<tr><td>Timoga Springs</td><td>Daytime swimming</td><td>Entrance fee per person</td></tr>
+<tr><td>St. Michael's Cathedral</td><td>Follow Mass schedule</td><td>Free (donations welcome)</td></tr></tbody></table></div>
+<p class="sub" style="margin-top:8px">Last reviewed: <b>update date here</b>. Tourism office contact: <b>add verified number</b>.</p></section>
+
+<section id="go"><h2>Transportation</h2><p class="sub">Getting to and around Iligan.</p>
+<div class="grid">
+<div class="card"><h3>✈️🚌 Getting to Iligan</h3><ul><li>Nearest major airport: Laguindingan (Cagayan de Oro), then a bus or van to Iligan (roughly 1.5–2.5 hrs).</li><li>Regular buses and vans run along the coastal highway from Cagayan de Oro.</li><li>Buses also connect from Ozamiz and other Northern Mindanao cities.</li></ul></div>
+<div class="card"><h3>🚐 Around the City</h3><ul><li><b>Jeepneys:</b> cheapest, run set routes. Ask the driver or a local for your stop.</li><li><b>Tricycles:</b> short trips; agree on the fare first.</li><li><b>Vans / taxis / hired rides:</b> for waterfall day trips.</li></ul></div>
+<div class="card"><h3>🥾 To the Falls</h3><ul><li>Maria Cristina and Timoga are easiest to reach from the city.</li><li>Tinago and Mimbalot need a ride plus a short descent by stairs or path.</li><li>Limunsudan is remote: go with a guide and arrange transport ahead.</li></ul></div></div>
+<p class="note">Fares change. Ask your accommodation or the tourism office for current rates.</p></section>
+
+<section id="trip"><h2>Suggested Itineraries</h2><p class="sub">Pick one and adjust for weather.</p>
+<div class="grid">
+<div class="card"><h3>☀️ 1 Day: Iligan Highlights</h3>
+<div class="day"><b>Morning</b> Maria Cristina Falls viewpoint</div><div class="day"><b>Midday</b> Local lunch in the city</div><div class="day"><b>Afternoon</b> Tinago Falls swim</div><div class="day"><b>Evening</b> Cathedral visit, dinner &amp; pasalubong shopping</div></div>
+<div class="card"><h3>🌿 2 Days: Falls &amp; Springs</h3>
+<div class="day"><b>Day 1</b> Maria Cristina → lunch → Tinago Falls → city dinner</div><div class="day"><b>Day 2</b> Mimbalot Falls → Timoga Springs → souvenirs</div></div>
+<div class="card"><h3>🥾 3 Days: Adventure</h3>
+<div class="day"><b>Day 1</b> City highlights and falls</div><div class="day"><b>Day 2</b> Limunsudan trek with a local guide</div><div class="day"><b>Day 3</b> Rest, springs, food trip &amp; local products</div></div></div></section>
+
+<section id="safe"><h2>Safety Reminders</h2><div class="grid">
+<div class="card"><h3>🌧️ Weather &amp; Water</h3><ul><li>Avoid falls and rivers after heavy rain; water can rise fast.</li><li>Swim only in marked areas, and wear a life vest if offered.</li><li>Wear shoes with good grip; rocks are slippery.</li></ul></div>
+<div class="card"><h3>🎒 Travel Smart</h3><ul><li>Hire accredited local guides for treks.</li><li>Carry water, cash in small bills, a rain cover and sunscreen.</li><li>Keep valuables secure and tell someone your plan.</li></ul></div>
+<div class="card"><h3>📞 Emergencies</h3><ul><li>National emergency hotline: <b>911</b>.</li><li>Local police, fire, hospital &amp; DRRMO numbers: <b>add verified numbers</b>.</li><li>Check current travel advisories before your trip.</li></ul></div>
+<div class="card"><h3>🤝 Respectful Travel</h3><ul><li>Dress modestly in churches and mosques.</li><li>Ask before photographing people.</li><li>Take your trash with you and protect the falls.</li></ul></div></div></section>
+
+<section id="food"><h2>Local Food &amp; Products</h2><div class="grid">
+<div class="card"><h3>🍽️ Try</h3><ul><li>Fresh seafood and kinilaw</li><li>Grilled favorites (sinugba)</li><li>Mindanao dishes such as pastil and Maranao piaparan</li><li>Local coffee, kakanin and tropical fruit</li></ul></div>
+<div class="card"><h3>🛍️ Bring Home</h3><ul><li>Maranao malong and woven textiles</li><li>Handicrafts and brassware from the region</li><li>Local snacks and delicacies as pasalubong</li></ul></div></div>
+<p class="sub" style="margin-top:8px">Ask locals for current favorite eateries and shops.</p></section>
+
+<section id="biz"><h2>Local Business Directory</h2><p class="sub">Search and filter local businesses. Entries below are templates: replace them with verified listings.</p>
+<input type="search" id="q" placeholder="Search businesses…"><div class="chips" id="bchips"></div><div class="grid" id="bgrid"></div>
+<div class="note">Are you a local business? Send your details to the tourism office for listing. <b>Add contact email here.</b></div></section>
+</main>
+<footer>Digital Iligan Tourism Guide · Information is a guide only; confirm details with official sources.</footer>
+<script>
+var D=[
+{n:"Maria Cristina Falls",c:"Waterfalls",d:"Iligan's best-known falls, also a hydropower source. Great viewpoints.",x:210,y:130,q:"Maria Cristina Falls Iligan"},
+{n:"Tinago Falls",c:"Waterfalls",d:"A hidden falls reached by a long staircase, with a cool blue pool.",x:110,y:150,q:"Tinago Falls Iligan"},
+{n:"Mimbalot Falls",c:"Waterfalls",d:"A scenic falls with pools, good for a half-day trip.",x:150,y:185,q:"Mimbalot Falls Iligan"},
+{n:"Limunsudan Falls",c:"Adventure",d:"A tall multi-tiered falls in the highlands. Trek with a guide.",x:300,y:240,q:"Limunsudan Falls"},
+{n:"Timoga Springs",c:"Nature",d:"Spring-fed swimming pools close to the city.",x:190,y:105,q:"Timoga Springs Iligan"},
+{n:"St. Michael's Cathedral",c:"Heritage",d:"The city's main church, in the heart of Iligan.",x:170,y:92,q:"St. Michael's Cathedral Iligan"}];
+var B=[
+{n:"Sample Restaurant",c:"Food",d:"Local Filipino and seafood dishes."},
+{n:"Sample Pasalubong Shop",c:"Products",d:"Local snacks and delicacies."},
+{n:"Sample Craft Store",c:"Products",d:"Malong, weaving and handicrafts."},
+{n:"Sample Inn / Homestay",c:"Stay",d:"Lodging near the city center."},
+{n:"Sample Tour Operator",c:"Tours",d:"Guided falls and trekking trips."},
+{n:"Sample Ride Service",c:"Transport",d:"Vans and hired rides for day trips."}];
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;e.innerHTML=h||"";return e}
+function gm(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q+", Philippines")}
+function chips(id,list,cb){var box=document.getElementById(id);["All"].concat(list).forEach(function(v,i){var b=el("button","chip"+(i?"":" on"),v);b.onclick=function(){[].forEach.call(box.children,function(x){x.classList.remove("on")});b.classList.add("on");cb(v)};box.appendChild(b)})}
+function uniq(a){return a.map(function(x){return x.c}).filter(function(v,i,s){return s.indexOf(v)==i})}
+function showD(f){var g=document.getElementById("dgrid");g.innerHTML="";D.filter(function(p){return f=="All"||p.c==f}).forEach(function(p){g.appendChild(el("div","card","<span class='tag'>"+p.c+"</span><h3>"+p.n+"</h3><p>"+p.d+"</p><a class='btn' target='_blank' rel='noopener' href='"+gm(p.q)+"'>Open in Maps →</a>"))})}
+chips("dchips",uniq(D),showD);showD("All");
+var pins=document.getElementById("pins"),ns="http://www.w3.org/2000/svg";
+D.forEach(function(p,i){var g=document.createElementNS(ns,"g");g.setAttribute("class","pin");g.setAttribute("tabindex","0");
+g.innerHTML="<circle cx='"+p.x+"' cy='"+p.y+"' r='9'/><text x='"+(p.x+13)+"' y='"+(p.y+4)+"'>"+p.n.replace("St. Michael's ","")+"</text>";
+var f=function(){[].forEach.call(pins.children,function(x){x.classList.remove("on")});g.classList.add("on");document.getElementById("mapinfo").innerHTML="<h3 style='margin:0'>"+p.n+"</h3><p>"+p.d+"</p><a class='btn' target='_blank' rel='noopener' href='"+gm(p.q)+"'>Get directions →</a>"};
+g.onclick=f;g.onkeydown=function(e){if(e.key=="Enter")f()};pins.appendChild(g)});
+var bc="All",bq="";
+function showB(){var g=document.getElementById("bgrid");g.innerHTML="";B.filter(function(b){return (bc=="All"||b.c==bc)&&(b.n+b.d+b.c).toLowerCase().indexOf(bq)>-1}).forEach(function(b){g.appendChild(el("div","card","<span class='tag'>"+b.c+"</span><h3>"+b.n+"</h3><p>"+b.d+"</p><p style='color:var(--mu)'>Contact: add details</p>"))});if(!g.children.length)g.appendChild(el("p","sub","No matches."))}
+chips("bchips",uniq(B),function(v){bc=v;showB()});
+document.getElementById("q").oninput=function(e){bq=e.target.value.toLowerCase();showB()};showB();
+</script></body></html>
