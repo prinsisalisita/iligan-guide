@@ -18,6 +18,7 @@ select,input,textarea{font:inherit}
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:1000;background:var(--card);border-bottom:1px solid var(--bd);display:flex;overflow-x:auto;gap:2px;padding:6px}
 nav a{white-space:nowrap;padding:8px 12px;border-radius:8px;color:var(--tx);text-decoration:none;font-size:.9rem;font-weight:600}
 nav a:hover{background:var(--ac2);color:var(--ac)}
+nav a.on{background:var(--ac2);color:var(--ac);box-shadow:inset 0 -3px 0 var(--ac)}
 main{max-width:960px;margin:0 auto;padding:0 16px 40px}
 section{padding-top:28px}h2{margin:0 0 4px;font-size:1.35rem}.sub{color:var(--mu);margin:0 0 14px;font-size:.92rem}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
@@ -222,5 +223,14 @@ location.href="mailto:"+TOURISM_EMAIL+"?subject="+encodeURIComponent("Directory 
 [].forEach.call(document.querySelectorAll("[data-t]"),function(x){x.dataset.en=x.textContent});
 $("lang").onchange=function(){var l=this.value;document.documentElement.lang=l=="en"?"en":l=="fil"?"fil":"ceb";[].forEach.call(document.querySelectorAll("[data-t]"),function(x){x.textContent=(T[l]&&T[l][x.dataset.t])||x.dataset.en})};
 loadST();showD();showT();showB();trip();
+/* active tab indicator */
+(function(){var nav=document.querySelector("nav"),links=[].slice.call(nav.querySelectorAll("a")),secs=links.map(function(a){return document.querySelector(a.getAttribute("href"))}),cur=-1,tick=false;
+function upd(){tick=false;var y=nav.offsetHeight+60,k=0;secs.forEach(function(x,i){if(x&&x.getBoundingClientRect().top<=y)k=i});
+if(window.innerHeight+window.scrollY>=document.body.scrollHeight-4)k=secs.length-1;
+if(window.scrollY<80&&secs[0].getBoundingClientRect().top>y)k=-1;
+if(k===cur)return;cur=k;links.forEach(function(a,i){a.classList.toggle("on",i===k);if(i===k)a.setAttribute("aria-current","true");else a.removeAttribute("aria-current")});
+if(k>-1){var a=links[k];nav.scrollTo({left:a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2,behavior:"smooth"})}}
+function req(){if(!tick){tick=true;requestAnimationFrame(upd)}}
+window.addEventListener("scroll",req,{passive:true});window.addEventListener("resize",req);links.forEach(function(a,i){a.addEventListener("click",function(){cur=i;links.forEach(function(b,j){b.classList.toggle("on",j===i)})})});upd()})();
 if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(function(){});
 </script></body></html>
