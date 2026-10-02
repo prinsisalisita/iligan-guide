@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Iligan Explorer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Plan your visit to Iligan, the City of Majestic Waterfalls: destinations, map, fees, transport, itineraries, safety and local businesses.">
+<meta property="og:title" content="Iligan Explorer"><meta property="og:description" content="Waterfalls, fees, transport, itineraries, safety and local finds in one place."><meta property="og:type" content="website">
+<meta name="theme-color" content="#0b7a6b">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+:root{--bg:#f6faf7;--card:#fff;--tx:#12302a;--mu:#5b736c;--ac:#0b7a6b;--ac2:#e8f4f1;--bd:#d5e4df;--warn:#fff4dc;--warnb:#e5b94a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1a17;--card:#14261f;--tx:#e6f2ee;--mu:#93aca4;--ac:#3ec5b0;--ac2:#173a33;--bd:#24443b;--warn:#3a2f10;--warnb:#a9862b}}
+:root[data-theme="dark"]{--bg:#0d1a17;--card:#14261f;--tx:#e6f2ee;--mu:#93aca4;--ac:#3ec5b0;--ac2:#173a33;--bd:#24443b;--warn:#3a2f10;--warnb:#a9862b}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:linear-gradient(135deg,#0b7a6b,#155e75);color:#fff;padding:32px 18px 28px;text-align:center}
+header h1{margin:0 0 6px;font-size:1.7rem}header p{margin:0 auto 10px;max-width:560px;opacity:.92}
+select,input,textarea{font:inherit}
+#lang{padding:7px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:1000;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;padding:6px 10px;max-height:100vh;overflow-y:auto}
+.nl{display:flex;flex-wrap:wrap;gap:2px;flex:1}.mb{display:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer}
+@media(max-width:820px){nav{flex-wrap:wrap}.mb{display:block}#lang{margin-left:auto}.nl{display:none;flex-basis:100%;flex-direction:column;order:3}.nl.open{display:flex}}
+.hl{scroll-margin-top:70px}
+nav a{white-space:nowrap;padding:8px 12px;border-radius:8px;color:var(--tx);text-decoration:none;font-size:.9rem;font-weight:600}
+nav a:hover{background:var(--ac2);color:var(--ac)}
+nav a.on{background:var(--ac2);color:var(--ac);box-shadow:inset 0 -3px 0 var(--ac)}
+main{max-width:960px;margin:0 auto;padding:0 16px 40px}
+section{padding-top:28px}h2{margin:0 0 4px;font-size:1.35rem}.sub{color:var(--mu);margin:0 0 14px;font-size:.92rem}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;position:relative}
+.card.pic{padding:0;overflow:hidden}.card.pic .bd{padding:12px 14px 14px}
+.ph{height:130px;background:linear-gradient(135deg,var(--ac),#155e75);display:flex;align-items:center;justify-content:center;font-size:2.6rem}
+.ph img{width:100%;height:100%;object-fit:cover}
+.card h3{margin:0 0 4px;font-size:1.02rem}.card p{margin:4px 0;font-size:.92rem}
+.tag{display:inline-block;background:var(--ac2);color:var(--ac);border-radius:99px;padding:2px 9px;font-size:.74rem;font-weight:700;margin-right:4px}
+.btn{display:inline-block;margin:6px 10px 0 0;color:var(--ac);font-weight:700;font-size:.88rem;text-decoration:none}
+.star{position:absolute;top:8px;right:8px;border:0;background:rgba(255,255,255,.9);color:#c98a00;border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer}
+.note{background:var(--warn);border-left:4px solid var(--warnb);border-radius:8px;padding:10px 12px;font-size:.88rem;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:top}th{color:var(--mu);font-size:.78rem;text-transform:uppercase}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px}
+.map{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px}
+#lmap{height:340px;border-radius:8px;z-index:0}#mapinfo{margin-top:8px;min-height:64px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:99px;padding:6px 13px;font-size:.85rem;cursor:pointer;font-weight:600}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+input[type=search],input[type=text],input[type=number],textarea,select.f{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:1rem;margin-bottom:10px}
+.day{border-left:3px solid var(--ac);padding:2px 0 2px 12px;margin:8px 0}.day b{color:var(--ac)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd)}
+.row input{width:90px;margin:0;padding:6px 8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two input{margin-bottom:4px}
+.ok{color:var(--ac);font-weight:700;font-size:.78rem}
+button.go{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
+#tot{font-size:1.5rem;font-weight:800;color:var(--ac)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}
+footer{text-align:center;color:var(--mu);font-size:.82rem;padding:20px 16px 30px}
+.st{font-weight:700;font-size:.85rem}small{color:var(--mu)}label{font-size:.85rem;color:var(--mu);font-weight:600}
+</style></head><body>
+<header><h1>🌊 Iligan Explorer</h1><p data-t="hero">Plan your visit to the City of Majestic Waterfalls: destinations, fees, transport, itineraries, safety and local finds in one place.</p></header>
+<nav><button class="mb" id="mb" aria-expanded="false" aria-controls="nl">☰ Menu</button><div class="nl" id="nl"><a href="#dest" data-t="dest">Destinations</a><a href="#trail">Waterfall Trail</a><a href="#plan">Plan My Trip</a><a href="#map" data-t="map">Map</a><a href="#fees" data-t="fees">Fees</a><a href="#go" data-t="go">Getting There</a><a href="#trip" data-t="trip">Itineraries</a><a href="#mytrip" data-t="mytrip">My Trip</a><a href="#when">When to Go</a><a href="#safe" data-t="safe">Safety</a><a href="#food" data-t="food">Food &amp; Products</a><a href="#biz" data-t="biz">Directory</a></div><select id="lang" aria-label="Language"><option value="en">English</option><option value="fil">Filipino</option><option value="ceb">Cebuano</option></select></nav>
+<main>
+<div class="note" id="wx" hidden></div>
+<div class="note" style="margin-top:16px"><b>Check before you go:</b> fees, schedules and access rules change. Figures marked "approx." are guides only. Confirm with the Iligan City Tourism Office before travelling.</div>
+
+<section id="dest"><h2 data-t="dest">Destinations</h2><p class="sub">Search, filter, and tap ☆ to save places to your trip.</p>
+<input type="search" id="qd" placeholder="Search destinations…"><div class="chips" id="dchips"></div><div class="grid" id="dgrid"></div></section>
+
+<section id="trail"><h2>Waterfall Trail</h2><p class="sub">Iligan's falls ranked from best known to hidden gems. Choose by fame, distance and how hard they are to reach.</p>
+<div class="chips" id="tchips"></div>
+<div class="two"><label>Sort by<select class="f" id="tsort"><option value="r">Most known first</option><option value="rr">Hidden gems first</option><option value="dist">Nearest first</option><option value="h">Easiest first</option></select></label>
+<label>Getting there<select class="f" id="thas"><option value="3">Any, including treks</option><option value="2">Stairs or short trail</option><option value="1">Easy access only</option></select></label></div>
+<div class="grid" id="tgrid"></div>
+<p class="note">Lesser-known falls may have few facilities and unmarked paths. Go with a local guide and check status first.</p></section>
+
+<section id="plan"><h2>Plan My Trip</h2><p class="sub">Answer four quick questions and get a day-by-day plan. Closed places are left out.</p>
+<div class="card"><div class="two"><label>Days<select class="f" id="pd"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+<label>Pace<select class="f" id="pp"><option value="2">Relaxed (2 stops/day)</option><option value="3" selected>Balanced (3 stops/day)</option><option value="4">Packed (4 stops/day)</option></select></label>
+<label>Style<select class="f" id="ps"><option value="famous">Famous highlights</option><option value="mix">Mix of both</option><option value="gems">Hidden gems first</option></select></label>
+<label>Comfort<select class="f" id="pc"><option value="1">Easy access only</option><option value="2" selected>Stairs or short trails</option><option value="3">Up for treks</option></select></label></div>
+<button class="go" id="pgo">Build my plan</button></div><div id="planout" style="margin-top:12px"></div></section>
+
+<section id="map"><h2 data-t="map">Map</h2><p class="sub">Pin positions are approximate. Tap a pin, then open exact directions in your maps app.</p>
+<div class="map"><div class="chips" id="mchips"></div><div id="lmap"></div><div id="mapinfo" class="card"><p style="color:var(--mu)">Select a pin to see details.</p></div></div></section>
+
+<section id="fees"><h2 data-t="fees">Fees</h2><p class="sub">Approximate guide. Rates often differ for residents, students, seniors and PWDs.</p>
+<div class="wrap"><table><thead><tr><th>Place</th><th>Typical hours</th><th>Fees</th></tr></thead><tbody>
+<tr><td>Maria Cristina Falls</td><td>Daytime viewing (approx. 7 AM – 5 PM)</td><td>Environmental / viewing fee; approx. modest per person</td></tr>
+<tr><td>Tinago Falls</td><td>Daytime (approx. 8 AM – 5 PM)</td><td>Entrance fee plus optional cottage / raft rentals</td></tr>
+<tr><td>Mimbalot Falls</td><td>Daytime</td><td>Entrance fee; guide recommended</td></tr>
+<tr><td>Limunsudan Falls</td><td>Trek: start early</td><td>Guide / environmental fees, arranged locally</td></tr>
+<tr><td>Timoga Springs</td><td>Daytime swimming</td><td>Entrance fee per person</td></tr>
+<tr><td>St. Michael's Cathedral</td><td>Follow Mass schedule</td><td>Free (donations welcome)</td></tr></tbody></table></div>
+<p class="sub" id="feemeta" style="margin-top:8px"></p></section>
+
+<section id="go"><h2 data-t="go">Getting There</h2><p class="sub">Getting to and around Iligan.</p>
+<div class="grid">
+<div class="card"><h3>✈️🚌 Getting to Iligan</h3><ul><li>Nearest major airport: Laguindingan (Cagayan de Oro), then a bus or van to Iligan (roughly 1.5–2.5 hrs).</li><li>Regular buses and vans run along the coastal highway from Cagayan de Oro.</li><li>Buses also connect from Ozamiz and other Northern Mindanao cities.</li></ul></div>
+<div class="card"><h3>🚐 Around the City</h3><ul><li><b>Jeepneys:</b> cheapest, run set routes. Ask the driver or a local for your stop.</li><li><b>Tricycles:</b> short trips; agree on the fare first.</li><li><b>Vans / taxis / hired rides:</b> for waterfall day trips.</li></ul></div>
+<div class="card"><h3>🥾 To the Falls</h3><ul><li>Maria Cristina and Timoga are easiest to reach from the city.</li><li>Tinago and Mimbalot need a ride plus a short descent by stairs or path.</li><li>Limunsudan is remote: go with a guide and arrange transport ahead.</li></ul></div></div>
+<p class="note">Fares change. Ask your accommodation or the tourism office for current rates.</p></section>
+
+<section id="trip"><h2 data-t="trip">Itineraries</h2><p class="sub">Pick one and adjust for weather.</p>
+<div class="grid">
+<div class="card"><h3>☀️ 1 Day: Iligan Highlights</h3>
+<div class="day"><b>Morning</b> Maria Cristina Falls viewpoint</div><div class="day"><b>Midday</b> Local lunch in the city</div><div class="day"><b>Afternoon</b> Tinago Falls swim</div><div class="day"><b>Evening</b> Cathedral visit, dinner &amp; pasalubong shopping</div></div>
+<div class="card"><h3>🌿 2 Days: Falls &amp; Springs</h3>
+<div class="day"><b>Day 1</b> Maria Cristina → lunch → Tinago Falls → city dinner</div><div class="day"><b>Day 2</b> Mimbalot Falls → Timoga Springs → souvenirs</div></div>
+<div class="card"><h3>🥾 3 Days: Adventure</h3>
+<div class="day"><b>Day 1</b> City highlights and falls</div><div class="day"><b>Day 2</b> Limunsudan trek with a local guide</div><div class="day"><b>Day 3</b> Rest, springs, food trip &amp; local products</div></div></div></section>
+
+<section id="mytrip"><h2 data-t="mytrip">My Trip &amp; Cost Estimate</h2><p class="sub">Saved on this device. Enter fees per person (confirm current rates first).</p>
+<div class="card"><div id="tl"></div>
+<div class="two" style="margin-top:10px"><label>Group size<input type="number" id="grp" min="1" value="2"></label><label>Transport &amp; extras (₱)<input type="number" id="trn" min="0" value="0"></label></div>
+<p>Estimated total: <span id="tot">₱0</span></p><button class="go" id="tcopy">Copy summary</button> <button class="go" id="tshare">Share link</button> <small id="tmsg" role="status"></small></div></section>
+
+<section id="when"><h2>When to Go &amp; Events</h2><div class="grid">
+<div class="card"><h3>🌦️ Weather</h3><p>Rain can arrive quickly at any time of year and raises river levels. Check the forecast the day before and go early for clearer falls and cooler treks.</p></div>
+<div class="card"><h3>🎉 Festivals</h3><p>The Diyandi Festival honors St. Michael, the city's patron, around late September. Confirm exact dates and street closures with the tourism office.</p></div></div></section>
+
+<section id="safe"><h2 data-t="safe">Safety</h2><div class="grid">
+<div class="card"><h3>🌧️ Weather &amp; Water</h3><ul><li>Avoid falls and rivers after heavy rain; water can rise fast.</li><li>Swim only in marked areas, and wear a life vest if offered.</li><li>Wear shoes with good grip; rocks are slippery.</li></ul></div>
+<div class="card"><h3>🎒 Travel Smart</h3><ul><li>Hire accredited local guides for treks.</li><li>Carry water, cash in small bills, a rain cover and sunscreen.</li><li>Keep valuables secure and tell someone your plan.</li></ul></div>
+<div class="card"><h3>📞 Emergencies</h3><ul><li>National emergency hotline: <b>911</b>.</li><li id="ctl">Police, fire, hospital &amp; DRRMO numbers are being verified. Ask the tourism office.</li><li>Check current travel advisories before your trip.</li></ul></div>
+<div class="card"><h3>🤝 Respectful Travel</h3><ul><li>Dress modestly in churches and mosques.</li><li>Ask before photographing people.</li><li>Take your trash with you and protect the falls.</li></ul></div></div></section>
+
+<section id="food"><h2 data-t="food">Food &amp; Products</h2><div class="grid">
+<div class="card"><h3>🍽️ Try</h3><ul><li>Fresh seafood and kinilaw</li><li>Grilled favorites (sinugba)</li><li>Mindanao dishes such as pastil and Maranao piaparan</li><li>Local coffee, kakanin and tropical fruit</li></ul></div>
+<div class="card"><h3>🛍️ Bring Home</h3><ul><li>Maranao malong and woven textiles</li><li>Handicrafts and brassware from the region</li><li>Local snacks and delicacies as pasalubong</li></ul></div></div>
+<p class="sub" style="margin-top:8px">Ask locals for current favorite eateries and shops.</p></section>
+
+<section id="biz"><h2 data-t="biz">Directory</h2><p class="sub">Search and filter local businesses. Entries below are templates: replace them with verified listings.</p>
+<input type="search" id="q" placeholder="Search businesses…"><div class="chips" id="bchips"></div><div class="grid" id="bgrid"></div>
+<div class="card" style="margin-top:14px"><h3>Are you a local business?</h3><p class="sub">Send your details to the tourism office for listing.</p>
+<input type="text" id="fn" placeholder="Business name"><select class="f" id="fc"><option>Food</option><option>Products</option><option>Stay</option><option>Tours</option><option>Transport</option></select>
+<input type="text" id="fk" placeholder="Phone / Facebook page"><textarea id="fd" rows="3" placeholder="What you offer"></textarea>
+<button class="go" id="fs">Send listing request</button> <small id="fmsg" role="status"></small></div></section>
+</main>
+<footer>Iligan Explorer · Information is a guide only; confirm details with official sources.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+/* ===== EDIT DATA HERE ===== */
+var TOURISM_EMAIL=""; /* fallback: tourism office email */
+var FORM_ENDPOINT=""; /* e.g. https://formspree.io/f/xxxx : submissions post here, no email app needed */
+var LAST_REVIEWED=""; /* e.g. "Oct 2026" once fees are verified */
+var CONTACTS=[{n:"Iligan City Tourism Office",tel:""},{n:"Police",tel:""},{n:"Fire",tel:""},{n:"Hospital",tel:""},{n:"CDRRMO / DRRMO",tel:""}]; /* add verified numbers */
+/* lat/lng are approximate: verify each before launch. f = fee per person in PESOS (0 = not set). img = photo URL (optional). */
+var D=[
+/* r = fame rank (1 = best known; only ranked falls appear on the Waterfall Trail). dist: 1 near city, 2 mid, 3 far. h: 1 easy access, 2 stairs/trail, 3 trek. hrs = typical [open,close] hour or null. Values marked "confirm" are provisional. */
+{n:"Maria Cristina Falls",c:"Waterfalls",e:"🌊",r:1,dist:1,h:1,hrs:[7,17],d:"Iligan's best-known falls, also a hydropower source. Great viewpoints.",lat:8.1867,lng:124.2033,f:0,img:"",q:"Maria Cristina Falls Iligan"},
+{n:"Tinago Falls",c:"Waterfalls",e:"💧",r:2,dist:1,h:2,hrs:[8,17],d:"A hidden falls reached by a long staircase, with a cool blue pool.",lat:8.1789,lng:124.2081,f:0,img:"",q:"Tinago Falls Iligan"},
+{n:"Mimbalot Falls",c:"Waterfalls",e:"🌿",r:3,dist:2,h:2,hrs:null,d:"A scenic falls with pools, good for a half-day trip.",lat:8.1560,lng:124.1880,f:0,img:"",q:"Mimbalot Falls Iligan"},
+{n:"Limunsudan Falls",c:"Waterfalls",e:"🥾",r:4,dist:3,h:3,hrs:null,d:"A tall multi-tiered falls in the highlands. Trek with a guide.",lat:8.0300,lng:124.2800,f:0,img:"",q:"Limunsudan Falls"},
+{n:"Dodiongan Falls",c:"Waterfalls",e:"💦",r:5,dist:2,h:2,hrs:null,d:"One of Iligan's lesser-known falls. Details to be confirmed by the tourism office.",lat:null,lng:null,f:0,img:"",q:"Dodiongan Falls Iligan"}, /* confirm rank, distance, access */
+{n:"Pagangon Falls (Sikyup)",c:"Waterfalls",e:"💦",r:6,dist:2,h:2,hrs:null,d:"A lesser-known falls, also called Sikyup. Details to be confirmed by the tourism office.",lat:null,lng:null,f:0,img:"",q:"Pagangon Falls Iligan"}, /* confirm rank, distance, access */
+{n:"Timoga Springs",c:"Nature",e:"🏊",dist:1,h:1,hrs:null,d:"Spring-fed swimming pools close to the city.",lat:8.2270,lng:124.2150,f:0,img:"",q:"Timoga Springs Iligan"},
+{n:"Hindang Caves",c:"Caves",e:"🕳️",dist:2,h:2,hrs:null,d:"Cave formations in Hindang. Details to be confirmed by the tourism office.",lat:null,lng:null,f:0,img:"",q:"Hindang Caves Iligan"}, /* confirm distance, access */
+{n:"Buhanginan Hill (City Hall Viewpoint)",c:"Viewpoint",e:"🌄",dist:1,h:1,hrs:null,d:"A hilltop viewpoint near Iligan City Hall with views over the city and bay.",lat:null,lng:null,f:0,img:"",q:"Buhanginan Hill Iligan City Hall viewpoint"},
+{n:"St. Michael's Cathedral",c:"Heritage",e:"⛪",dist:1,h:1,hrs:null,d:"The city's main church, in the heart of Iligan.",lat:8.2283,lng:124.2436,f:0,img:"",q:"St. Michael's Cathedral Iligan"}];
+/* tel: phone number, fb: Facebook/Messenger link, ver: true when checked, upd: "Mon YYYY" */
+var B=[
+{n:"Sample Restaurant",c:"Food",d:"Local Filipino and seafood dishes.",tel:"",fb:"",ver:false,upd:""},
+{n:"Sample Pasalubong Shop",c:"Products",d:"Local snacks and delicacies.",tel:"",fb:"",ver:false,upd:""},
+{n:"Sample Craft Store",c:"Products",d:"Malong, weaving and handicrafts.",tel:"",fb:"",ver:false,upd:""},
+{n:"Sample Inn / Homestay",c:"Stay",d:"Lodging near the city center.",tel:"",fb:"",ver:false,upd:""},
+{n:"Sample Tour Operator",c:"Tours",d:"Guided falls and trekking trips.",tel:"",fb:"",ver:false,upd:""},
+{n:"Sample Ride Service",c:"Transport",d:"Vans and hired rides for day trips.",tel:"",fb:"",ver:false,upd:""}];
+var T={fil:{hero:"Planuhin ang iyong pagbisita sa Lungsod ng mga Maringal na Talon: mga destinasyon, bayarin, sasakyan, itinerary, kaligtasan at mga lokal na produkto.",dest:"Mga Destinasyon",map:"Mapa",fees:"Bayarin",go:"Paano Pumunta",trip:"Mga Itinerary",mytrip:"Aking Biyahe",safe:"Kaligtasan",food:"Pagkain at Produkto",biz:"Direktoryo"},
+ceb:{hero:"Planoha ang imong pagbisita sa Siyudad sa Maanindot nga mga Busay: mga destinasyon, bayranan, sakyanan, itinerary, kaluwasan ug lokal nga produkto.",dest:"Mga Destinasyon",map:"Mapa",fees:"Bayranan",go:"Unsaon Pag-adto",trip:"Mga Itinerary",mytrip:"Akong Biyahe",safe:"Kaluwasan",food:"Pagkaon ug Produkto",biz:"Direktoryo"}};
+/* ===== END DATA ===== */
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;e.innerHTML=h||"";return e}
+function gm(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q+", Philippines")}
+function uniq(a){return a.map(function(x){return x.c}).filter(function(v,i,s){return s.indexOf(v)==i})}
+function chips(id,list,cb){var box=$(id);["All"].concat(list).forEach(function(v,i){var b=el("button","chip"+(i?"":" on"),esc(v));b.onclick=function(){[].forEach.call(box.children,function(x){x.classList.remove("on")});b.classList.add("on");cb(v)};box.appendChild(b)})}
+/* saved trip */
+var S=[];try{S=JSON.parse(localStorage.getItem("ilg_trip")||"[]")}catch(e){}
+function persist(){try{localStorage.setItem("ilg_trip",JSON.stringify(S))}catch(e){}}
+var fee=D.map(function(p){return p.f});var CFG={};
+(function(){try{CFG=JSON.parse(localStorage.getItem("ilg_cfg")||"{}");(CFG.fee||[]).forEach(function(v,i){if(i<fee.length&&v!=null)fee[i]=v})}catch(e){CFG={}}
+try{var u=new URLSearchParams(location.search),t=u.get("trip");if(t){var l=t.split("|").filter(function(n){return ix(n)>-1});if(l.length){S=l;persist()}}if(u.get("g"))CFG.grp=u.get("g")}catch(e){}})();
+function ix(n){return D.map(function(p){return p.n}).indexOf(n)}
+function calc(){var s=0;S.forEach(function(n){s+=+fee[ix(n)]||0});$("tot").textContent="₱"+(s*(+$("grp").value||1)+(+$("trn").value||0)).toLocaleString();try{localStorage.setItem("ilg_cfg",JSON.stringify({fee:fee,grp:$("grp").value,trn:$("trn").value}))}catch(e){}}
+function trip(){$("tl").innerHTML=S.length?S.map(function(n){var i=ix(n);return "<div class='row'><span>"+esc(n)+"</span><label>₱ <input type='number' min='0' data-fee='"+i+"' value='"+esc(fee[i])+"'> /person</label></div>"}).join(""):"<p class='sub'>Tap ☆ on a destination to add it here.</p>";calc()}
+/* destinations */
+var dc="All",dq="";
+var LV=["","Easy","Moderate","Hard"],DS=["","Near city","Mid-distance","Far"],ST={};
+function tier(r){return r<=4?"Iconic":r<=10?"Well-known":"Hidden gem"}
+function stat(p){var s=ST[p.n];
+if(s&&s.upd&&Date.now()-new Date(s.upd)<1728e5){var m={open:"🟢 Open",closed:"🔴 Closed",limited:"🟠 Limited access",unknown:"⚪ Status unknown"};return "<span class='st'>"+(m[s.s]||m.unknown)+(s.note?" · "+esc(s.note):"")+"</span> <small>Updated "+esc(new Date(s.upd).toLocaleString("en-PH",{dateStyle:"medium",timeStyle:"short"}))+"</small>"}
+if(p.hrs){var h=+new Intl.DateTimeFormat("en-GB",{hour:"numeric",hour12:false,timeZone:"Asia/Manila"}).format(new Date()),o=h>=p.hrs[0]&&h<p.hrs[1];return "<span class='st'>"+(o?"🟡 Usually open now":"⚫ Usually closed now")+"</span> <small>Typical "+p.hrs[0]+":00–"+p.hrs[1]+":00, not confirmed</small>"}
+return "<span class='st'>⚪ Status not confirmed</span>"}
+function loadST(){fetch("status.json?"+Date.now()).then(function(r){return r.json()}).then(function(j){ST=j;showD();showT()}).catch(function(){})}
+function cardHTML(p,i){var on=S.indexOf(p.n)>-1;return "<div class='ph'>"+(p.img?"<img loading='lazy' alt='"+esc(p.n)+"' src='"+esc(p.img)+"'>":p.e)+"</div><button class='star' data-fav='"+i+"' aria-label='Save "+esc(p.n)+"'>"+(on?"★":"☆")+"</button><div class='bd'>"+(p.r?"<span class='tag'>#"+p.r+" · "+tier(p.r)+"</span>":"")+"<span class='tag'>"+esc(p.c)+"</span><span class='tag'>"+LV[p.h]+"</span><span class='tag'>"+DS[p.dist]+"</span><h3>"+esc(p.n)+"</h3><p>"+esc(p.d)+"</p><p>"+stat(p)+"</p><a class='btn' target='_blank' rel='noopener' href='"+gm(p.q)+"'>Open in Maps →</a></div>"}
+function showD(){var g=$("dgrid");g.innerHTML="";D.forEach(function(p,i){if((dc!="All"&&p.c!=dc)||(p.n+p.d+p.c).toLowerCase().indexOf(dq)<0)return;var c=el("div","card pic hl",cardHTML(p,i));c.id="d"+i;g.appendChild(c)});
+if(!g.children.length)g.appendChild(el("p","sub","No matches."))}
+var tt="All";
+function showT(){var k=$("tsort").value,a=D.map(function(p,i){return [p,i]}).filter(function(x){var p=x[0];return p.c=="Waterfalls"&&p.r&&(tt=="All"||tier(p.r)==tt)&&p.h<=+$("thas").value});
+a.sort(function(x,y){var p=x[0],q=y[0];return k=="rr"?q.r-p.r:k=="r"?p.r-q.r:(p[k]-q[k])||(p.r-q.r)});
+var g=$("tgrid");g.innerHTML="";a.forEach(function(x){g.appendChild(el("div","card pic",cardHTML(x[0],x[1])))});if(!a.length)g.appendChild(el("p","sub","No falls match these filters."))}
+chips("tchips",["Iconic","Well-known","Hidden gem"],function(v){tt=v;showT()});$("tsort").onchange=$("thas").onchange=showT;
+var lastPlan=[];
+function plan(){var nd=+$("pd").value,per=+$("pp").value,st=$("ps").value,mh=+$("pc").value,now=Date.now();
+var c=D.filter(function(p){var s=ST[p.n];return p.h<=mh&&!(s&&s.s=="closed"&&s.upd&&now-new Date(s.upd)<1728e5)});
+function k(p){return p.r||6}
+c.sort(function(a,b){return st=="gems"?k(b)-k(a):st=="mix"?(a.dist-b.dist)||(k(a)-k(b)):k(a)-k(b)});
+var hard=c.filter(function(p){return p.h==3}).slice(0,nd>=5?2:nd>=3?1:0),rest=c.filter(function(p){return p.h<3}),days=[];
+for(var i=0;i<nd-hard.length;i++)days.push(rest.slice(i*per,(i+1)*per));
+hard.forEach(function(p,j){days.splice(Math.min(1+j*2,days.length),0,[p])});
+days=days.filter(function(d){return d.length});lastPlan=[];
+var T=["Morning","Midday","Afternoon","Late afternoon"];
+var h=days.map(function(d,i){return "<div class='card' style='margin-bottom:10px'><h3>Day "+(i+1)+"</h3>"+d.map(function(p,j){lastPlan.push(p.n);return "<div class='day'><b>"+T[j]+"</b> "+esc(p.n)+" <small>"+LV[p.h]+" · "+DS[p.dist]+"</small><br>"+stat(p)+" <a class='btn' target='_blank' rel='noopener' href='"+gm(p.q)+"'>Directions →</a></div>"}).join("")+(d[0].h==3?"<p class='sub'>Trek day: start at dawn with an accredited guide.</p>":"")+"</div>"}).join("");
+$("planout").innerHTML=(h||"<p class='sub'>No places match. Try a higher comfort level.</p>")+(h&&days.length<nd?"<p class='sub'>Fewer places than days match, so the plan is shorter.</p>":"")+(h?"<button class='go' id='psave'>Save all to My Trip</button> <small>Check status again the day before you go.</small>":"");
+if($("psave"))$("psave").onclick=function(){lastPlan.forEach(function(n){if(S.indexOf(n)<0)S.push(n)});persist();showD();showT();trip();this.textContent="Saved ✓"}}
+$("pgo").onclick=plan;
+chips("dchips",uniq(D),function(v){dc=v;showD()});$("qd").oninput=function(e){dq=e.target.value.toLowerCase();showD()};
+document.addEventListener("click",function(e){var b=e.target.closest("[data-fav]");if(!b)return;var n=D[b.dataset.fav].n,k=S.indexOf(n);if(k<0)S.push(n);else S.splice(k,1);persist();showD();showT();trip()});
+document.addEventListener("input",function(e){var t=e.target;if(t.dataset&&t.dataset.fee!=null){fee[t.dataset.fee]=t.value;calc()}else if(t.id=="grp"||t.id=="trn")calc()});
+/* map */
+if(window.L){var m=L.map("lmap",{scrollWheelZoom:false}).setView([8.2,124.23],11);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap contributors"}).addTo(m);
+var layer=L.layerGroup().addTo(m);
+function pop(p,i){return "<div style='min-width:170px'>"+(p.img?"<img alt='' src='"+esc(p.img)+"' style='width:100%;height:80px;object-fit:cover;border-radius:6px'>":"")+"<b>"+esc(p.n)+"</b><br>"+stat(p)+"<br><a href='#dest' data-card='"+i+"'>View card →</a> · <a target='_blank' rel='noopener' href='"+gm(p.q)+"'>Directions</a></div>"}
+function pins(cat){layer.clearLayers();var b=[];D.forEach(function(p,i){if(p.lat==null||(cat!="All"&&p.c!=cat))return;b.push([p.lat,p.lng]);
+L.marker([p.lat,p.lng],{title:p.n}).addTo(layer).bindPopup(pop(p,i)).on("click",function(){$("mapinfo").innerHTML="<h3 style='margin:0'>"+esc(p.n)+"</h3><p>"+esc(p.d)+"</p><p>"+stat(p)+"</p><a class='btn' target='_blank' rel='noopener' href='"+gm(p.q)+"'>Get directions →</a>"})});
+if(b.length)m.fitBounds(b,{padding:[24,24]})}
+chips("mchips",uniq(D.filter(function(p){return p.lat!=null})),pins);pins("All")}else{$("lmap").innerHTML="<p class='sub' style='padding:12px'>The map needs an internet connection. Use “Open in Maps” on any destination card.</p>"}
+/* directory */
+var bc="All",bq="";
+function showB(){var g=$("bgrid");g.innerHTML="";B.filter(function(b){return (bc=="All"||b.c==bc)&&(b.n+b.d+b.c).toLowerCase().indexOf(bq)>-1}).forEach(function(b){
+var a=(b.tel?"<a class='btn' href='tel:"+esc(b.tel.replace(/[^\d+]/g,""))+"'>📞 Call</a>":"")+(/^https?:\/\//.test(b.fb)?"<a class='btn' target='_blank' rel='noopener' href='"+esc(b.fb)+"'>💬 Facebook / Messenger</a>":"");
+g.appendChild(el("div","card","<span class='tag'>"+esc(b.c)+"</span>"+(b.ver?"<span class='ok'>✔ Verified"+(b.upd?" · "+esc(b.upd):"")+"</span>":"")+"<h3>"+esc(b.n)+"</h3><p>"+esc(b.d)+"</p>"+(a||"<p style='color:var(--mu)'>Contact: add details</p>")))});
+if(!g.children.length)g.appendChild(el("p","sub","No matches."))}
+chips("bchips",uniq(B),function(v){bc=v;showB()});$("q").oninput=function(e){bq=e.target.value.toLowerCase();showB()};
+$("fs").onclick=function(){if(!$("fn").value.trim()){alert("Please enter your business name.");return}
+if(FORM_ENDPOINT){var fm=$("fmsg");fm.textContent="Sending…";fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({business:$("fn").value,category:$("fc").value,contact:$("fk").value,details:$("fd").value})}).then(function(r){if(!r.ok)throw 0;fm.textContent="Thank you! Your request was sent.";["fn","fk","fd"].forEach(function(i){$(i).value=""})}).catch(function(){fm.textContent="Could not send. Please try again later."});return}
+if(!TOURISM_EMAIL){alert("Set TOURISM_EMAIL in the page code first.");return}
+location.href="mailto:"+TOURISM_EMAIL+"?subject="+encodeURIComponent("Directory listing: "+$("fn").value)+"&body="+encodeURIComponent("Business: "+$("fn").value+"\nCategory: "+$("fc").value+"\nContact: "+$("fk").value+"\nDetails: "+$("fd").value)};
+/* language */
+[].forEach.call(document.querySelectorAll("[data-t]"),function(x){x.dataset.en=x.textContent});
+$("lang").onchange=function(){var l=this.value;document.documentElement.lang=l=="en"?"en":l=="fil"?"fil":"ceb";[].forEach.call(document.querySelectorAll("[data-t]"),function(x){x.textContent=(T[l]&&T[l][x.dataset.t])||x.dataset.en})};
+if(CFG.grp)$("grp").value=CFG.grp;if(CFG.trn)$("trn").value=CFG.trn;
+loadST();showD();showT();showB();trip();
+/* nav menu */
+$("mb").onclick=function(){var o=$("nl").classList.toggle("open");this.setAttribute("aria-expanded",o)};
+$("nl").onclick=function(e){if(e.target.closest("a")){$("nl").classList.remove("open");$("mb").setAttribute("aria-expanded","false")}};
+/* map popup -> card */
+function goCard(i){dc="All";dq="";$("qd").value="";[].forEach.call($("dchips").children,function(x,k){x.classList.toggle("on",k==0)});showD();var e=$("d"+i);if(e){e.scrollIntoView({behavior:"smooth",block:"center"});e.style.outline="3px solid var(--ac)";setTimeout(function(){e.style.outline=""},2500)}}
+document.addEventListener("click",function(e){var a=e.target.closest("[data-card]");if(a){e.preventDefault();goCard(+a.dataset.card)}});
+/* share / export */
+function shareURL(){return location.href.split(/[?#]/)[0]+"?trip="+encodeURIComponent(S.join("|"))+"&g="+encodeURIComponent($("grp").value)}
+function sumTxt(){return "My Iligan trip ("+(+$("grp").value||1)+" pax)\n"+S.map(function(n,i){return (i+1)+". "+n}).join("\n")+"\nEstimated total: "+$("tot").textContent+"\n"+shareURL()}
+function cp(t,ok){var m=$("tmsg");if(!S.length){m.textContent="Save a place first.";return}
+(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){m.textContent=ok},function(){prompt("Copy this:",t)})}
+$("tcopy").onclick=function(){cp(sumTxt(),"Summary copied ✓")};
+$("tshare").onclick=function(){if(S.length&&navigator.share){navigator.share({title:"My Iligan trip",text:sumTxt()}).catch(function(){})}else cp(shareURL(),"Link copied ✓")};
+/* contacts + fee meta */
+(function(){var ok=CONTACTS.filter(function(c){return c.tel});
+if(ok.length){var l=$("ctl");l.insertAdjacentHTML("beforebegin",ok.map(function(c){return "<li>"+esc(c.n)+": <a href='tel:"+esc(c.tel.replace(/[^\d+]/g,""))+"'><b>"+esc(c.tel)+"</b></a></li>"}).join(""));l.hidden=true}
+var tel=CONTACTS[0]&&CONTACTS[0].tel,p=[];if(LAST_REVIEWED)p.push("Last reviewed: <b>"+esc(LAST_REVIEWED)+"</b>.");if(tel)p.push("Tourism office: <a href='tel:"+esc(tel.replace(/[^\d+]/g,""))+"'><b>"+esc(tel)+"</b></a>.");
+$("feemeta").innerHTML=p.join(" ")||"Rates are being verified. Confirm with the tourism office before you go."})();
+/* weather advisory (Open-Meteo, no key) */
+fetch("https://api.open-meteo.com/v1/forecast?latitude=8.2&longitude=124.23&daily=precipitation_sum,precipitation_probability_max&timezone=Asia%2FManila&forecast_days=1").then(function(r){return r.json()}).then(function(j){
+var mm=j.daily.precipitation_sum[0],pr=j.daily.precipitation_probability_max[0],hi=mm>=20||pr>=70,b=$("wx");
+b.innerHTML=(hi?"⚠️ <b>Heavy rain likely today</b> ("+pr+"% chance, ~"+mm+" mm). Rivers and falls can rise fast: avoid swimming and treks, and check with the tourism office.":"🌤️ <b>Today:</b> "+pr+"% chance of rain (~"+mm+" mm). Water levels can still change quickly; confirm locally before swimming.");b.hidden=false}).catch(function(){});
+/* active tab indicator */
+(function(){var nav=document.querySelector("nav"),links=[].slice.call(nav.querySelectorAll("a")),secs=links.map(function(a){return document.querySelector(a.getAttribute("href"))}),cur=-1,tick=false;
+function upd(){tick=false;var y=nav.offsetHeight+60,k=0;secs.forEach(function(x,i){if(x&&x.getBoundingClientRect().top<=y)k=i});
+if(window.innerHeight+window.scrollY>=document.body.scrollHeight-4)k=secs.length-1;
+if(window.scrollY<80&&secs[0].getBoundingClientRect().top>y)k=-1;
+if(k===cur)return;cur=k;links.forEach(function(a,i){a.classList.toggle("on",i===k);if(i===k)a.setAttribute("aria-current","true");else a.removeAttribute("aria-current")});
+if(k>-1){var a=links[k];nav.scrollTo({left:a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2,behavior:"smooth"})}}
+function req(){if(!tick){tick=true;requestAnimationFrame(upd)}}
+window.addEventListener("scroll",req,{passive:true});window.addEventListener("resize",req);links.forEach(function(a,i){a.addEventListener("click",function(){cur=i;links.forEach(function(b,j){b.classList.toggle("on",j===i)})})});upd()})();
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(function(){});
+</script></body></html>
