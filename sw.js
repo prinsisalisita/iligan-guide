@@ -1,7 +1,7 @@
 /* Iligan Explorer service worker
    Place this file next to index.html (same folder). Bump VERSION whenever you
    change any page, assets/app.js, assets/style.css, images or the cached libraries so visitors get the update. */
-var VERSION = "v2";
+var VERSION = "v3";
 var SHELL = "ilg-shell-" + VERSION;
 var TILES = "ilg-tiles-" + VERSION;
 var MAX_TILES = 250;
@@ -18,6 +18,7 @@ var CORE = [
   "safety.html",
   "local.html",
   "assets/style.css",
+  "assets/logo.svg",
   "assets/app.js",
   "assets/img/tinago.webp",
   "assets/img/mariacristina.webp",
