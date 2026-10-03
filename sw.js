@@ -1,7 +1,7 @@
 /* Iligan Explorer service worker
    Place this file next to index.html (same folder). Bump VERSION whenever you
-   change index.html or the cached libraries so visitors get the update. */
-var VERSION = "v1";
+   change any page, assets/app.js, assets/style.css, images or the cached libraries so visitors get the update. */
+var VERSION = "v2";
 var SHELL = "ilg-shell-" + VERSION;
 var TILES = "ilg-tiles-" + VERSION;
 var MAX_TILES = 250;
@@ -9,6 +9,26 @@ var MAX_TILES = 250;
 var CORE = [
   "./",
   "index.html",
+  "destinations.html",
+  "waterfall-trail.html",
+  "map.html",
+  "plan.html",
+  "my-trip.html",
+  "visitor-info.html",
+  "safety.html",
+  "local.html",
+  "assets/style.css",
+  "assets/app.js",
+  "assets/img/tinago.webp",
+  "assets/img/mariacristina.webp",
+  "assets/img/mimbalot.webp",
+  "assets/img/limunsudan.webp",
+  "assets/img/dodiongan.webp",
+  "assets/img/pagangon.webp",
+  "assets/img/timoga.webp",
+  "assets/img/hindang.webp",
+  "assets/img/buhanginan.webp",
+  "assets/img/cathedral.webp",
   "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css",
   "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"
 ];
@@ -82,18 +102,21 @@ self.addEventListener("fetch", function (e) {
   if (req.method !== "GET") return;
   var url = new URL(req.url);
 
-  /* 1. Page loads: newest copy when online, saved copy when offline. */
+  /* 1. Page loads: newest copy when online, that page's saved copy when offline.
+        Each page is cached under its own URL (query string ignored, so
+        ?trip= share links still work offline). */
   if (req.mode === "navigate") {
+    var pageKey = new Request(url.origin + url.pathname);
     e.respondWith(
       fetch(req).then(function (res) {
         if (cacheable(res)) {
           var copy = res.clone();
-          caches.open(SHELL).then(function (c) { c.put("index.html", copy); });
+          caches.open(SHELL).then(function (c) { c.put(pageKey, copy); });
         }
         return res;
       }).catch(function () {
-        return caches.match("index.html").then(function (hit) {
-          return hit || caches.match("./");
+        return caches.match(pageKey).then(function (hit) {
+          return hit || caches.match("index.html") || caches.match("./");
         });
       })
     );
